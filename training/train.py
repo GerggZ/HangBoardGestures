@@ -4,15 +4,15 @@ import os
 import datetime
 from keras.callbacks import TensorBoard
 
-from src.training.utils.data_utils import (
+from training.utils.data_utils import (
     load_all_csvs,
     preprocess_data,
     split_data
 )
-from src.training.utils.model_utils import build_cnn_model
-from src.training.data_generator import AugmentedDataGenerator
+from training.utils.model_utils import build_cnn_model
+from training.data_generator import AugmentedDataGenerator
 
-from src.utils.config import MODEL_PATH, TRAINING_LOGS_FOLDER
+from utils.config import MODEL_PATH, TRAINING_LOGS_FOLDER
 
 
 def train_model():

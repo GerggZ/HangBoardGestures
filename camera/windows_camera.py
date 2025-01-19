@@ -1,7 +1,7 @@
 # camera/windows_camera.py
 import cv2
 from numpy.typing import NDArray
-from src.camera.base_camera import BaseCamera
+from camera.base_camera import BaseCamera
 
 
 class WindowsCamera(BaseCamera):

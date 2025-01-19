@@ -3,10 +3,10 @@
 import os
 
 
-CURRENT_NAME = "new_temp"
-MODEL_PATH = os.path.join("src", "data", f"{CURRENT_NAME}_cnn_model.keras")
-LANDMARK_DATA_FOLDER = os.path.join("src", "data", "hand_landmarks_data", CURRENT_NAME)
-TRAINING_LOGS_FOLDER = os.path.join("src", "data", "logs", CURRENT_NAME)
+CURRENT_NAME = "generic_gestures"  # generic_gestures
+MODEL_PATH = os.path.join("data", f"{CURRENT_NAME}_cnn_model.keras")
+LANDMARK_DATA_FOLDER = os.path.join("data", "hand_landmarks_data", CURRENT_NAME)
+TRAINING_LOGS_FOLDER = os.path.join("data", "logs", CURRENT_NAME)
 
 # Gestures for the hand
 GENERIC_GESTURE_NAMES = {

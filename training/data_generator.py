@@ -2,7 +2,7 @@
 
 import numpy as np
 from keras.utils import Sequence
-from src.training.utils.augment_utils import augment_data
+from training.utils.augment_utils import augment_data
 
 
 class AugmentedDataGenerator(Sequence):

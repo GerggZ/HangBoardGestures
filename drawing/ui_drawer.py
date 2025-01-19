@@ -5,7 +5,7 @@ import time
 import numpy as np
 from numpy.typing import NDArray
 
-from src.utils.config import HAND_CONNECTIONS, LANDMARK_TO_FINGER, FINGER_COLORS
+from utils.config import HAND_CONNECTIONS, LANDMARK_TO_FINGER, FINGER_COLORS
 
 
 class UIDrawer:

@@ -1,15 +1,15 @@
 # main.py
 
 import cv2
-from src.camera.windows_camera import WindowsCamera  # or RaspberryPiCamera
-from src.gestures.generic_gestures.hand_tracker import HandTracker
-from src.gestures.generic_gestures.gesture_recorder import GestureRecorder
-from src.gestures.generic_gestures.gesture_predictor import GesturePredictor
-from src.utils.config import GENERIC_GESTURE_NAMES
-from src.drawing.ui_drawer import UIDrawer
+from camera.windows_camera import WindowsCamera  # or RaspberryPiCamera
+from gestures.generic_gestures.hand_tracker import HandTracker
+from gestures.generic_gestures.gesture_recorder import GestureRecorder
+from gestures.generic_gestures.gesture_predictor import GesturePredictor
+from utils.config import GENERIC_GESTURE_NAMES
+from drawing.ui_drawer import UIDrawer
 
-from src.training.train import train_model
-from src.utils.config import LANDMARK_DATA_FOLDER, MODEL_PATH
+from training.train import train_model
+from utils.config import LANDMARK_DATA_FOLDER, MODEL_PATH
 class HandTrackingApp:
     def __init__(self):
         self.camera = WindowsCamera(camera_source=0, width=640, height=480)

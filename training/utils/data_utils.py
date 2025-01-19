@@ -3,12 +3,10 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from keras.utils import to_categorical, Sequence
+from keras.utils import to_categorical
 
-from src.utils.config import LANDMARK_DATA_FOLDER, MODEL_PATH, GENERIC_GESTURE_NAMES
-from src.utils.scaling import scale_xy_data
-
-from numpy.typing import NDArray
+from utils.config import LANDMARK_DATA_FOLDER
+from utils.scaling import scale_xy_data
 
 
 def load_all_csvs(data_folder: str = LANDMARK_DATA_FOLDER) -> pd.DataFrame:

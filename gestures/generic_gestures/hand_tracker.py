@@ -3,7 +3,7 @@
 import cv2
 from numpy.typing import NDArray
 import mediapipe as mp
-from src.utils.config import HAND_CONNECTIONS, FINGER_COLORS, LANDMARK_TO_FINGER
+
 
 class HandTracker:
     """

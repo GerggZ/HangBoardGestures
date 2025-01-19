@@ -1,10 +1,9 @@
 # gestures/generic_gestures/gesture_recorder.py
 
 import os
-import time
 import pandas as pd
 from datetime import datetime
-from src.utils.config import GENERIC_GESTURE_NAMES
+from utils.config import GENERIC_GESTURE_NAMES
 
 
 class GestureRecorder:

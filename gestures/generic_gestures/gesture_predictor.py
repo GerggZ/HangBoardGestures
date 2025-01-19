@@ -3,8 +3,8 @@ import os.path
 
 import numpy as np
 from keras.models import load_model
-from src.utils.config import GENERIC_GESTURE_NAMES
-from src.utils.scaling import scale_xy_data, convert_landmarks_to_numpy
+from utils.config import GENERIC_GESTURE_NAMES
+from utils.scaling import scale_xy_data, convert_landmarks_to_numpy
 
 
 class GesturePredictor:
