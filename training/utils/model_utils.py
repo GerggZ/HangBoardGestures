@@ -1,7 +1,7 @@
 # training/model_utils.py
 
 from keras.models import Sequential
-from keras.layers import Conv1D, Flatten, Dense, Dropout
+from keras.layers import Input, Conv1D, Flatten, Dense, Dropout
 
 
 def build_cnn_model(input_shape, num_classes):
@@ -10,7 +10,8 @@ def build_cnn_model(input_shape, num_classes):
     input_shape is e.g. (42, 1).
     """
     model = Sequential([
-        Conv1D(32, kernel_size=3, activation='relu', input_shape=input_shape),
+        Input(shape=input_shape),
+        Conv1D(32, kernel_size=3, activation='relu'),
         Conv1D(64, kernel_size=3, activation='relu'),
         Flatten(),
         Dense(128, activation='relu'),

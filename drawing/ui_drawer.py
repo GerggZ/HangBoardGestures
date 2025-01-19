@@ -25,9 +25,9 @@ class UIDrawer:
         Draws a semi-transparent box and text showing UI information
         """
         # Define box position & dimensions
-        box_x, box_y, box_w, box_h = 10, 10, 340, 190  # Text box size
+        box_x, box_y, box_w, box_h = 10, 10, 270, 150  # Text box size
         text_start_x, text_start_y = box_x + 15, box_y + 30  # Text padding
-        line_spacing = 30
+        line_spacing = 20
         text_transparency = 0.5  # Adjust this (0 = fully transparent, 1 = fully solid)
 
         # Create an overlay for transparency
@@ -37,7 +37,7 @@ class UIDrawer:
 
         # Set font properties
         font = cv2.FONT_HERSHEY_SIMPLEX
-        font_scale, font_thickness = 0.7, 2
+        font_scale, font_thickness = 0.5, 1
         text_color = (255, 255, 255)
 
         # UI Text Content

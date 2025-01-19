@@ -10,7 +10,8 @@ from training.utils.data_utils import (
     split_data
 )
 from training.utils.model_utils import build_cnn_model
-from training.data_generator import AugmentedDataGenerator
+from training.data_generator import AugmentedGenerator
+from training.utils.augment_utils import HandsAugmentor
 
 
 class TrainModelApp:
@@ -25,17 +26,25 @@ class TrainModelApp:
         """Loads data, splits it, trains the CNN model, and evaluates it."""
         # Load and preprocess data
         df = load_all_csvs(data_folder=self.landmark_data_folder)
-        X, y, num_classes = preprocess_data(df, standardize=False)
+        X, y, num_classes = preprocess_data(df)
 
         # Split dataset
         X_train, X_val, X_test, y_train, y_val, y_test = split_data(X, y)
 
+        # Get Augmentor ready
+        augmentor = HandsAugmentor(
+            flip_horizontal_prob=0.5, flip_vertical_prob=0.0, rotation_prob=0.7,
+            max_yaw=30,  # (XZ-Plane rotation)
+            max_pitch=30,  # (YZ-Plane rotation)
+            max_roll=60  # (XY-Plane rotation, in-plane)
+        )
         # Build model
-        model = build_cnn_model(input_shape=(X_train.shape[1], 1), num_classes=num_classes)
+        train_shape = 42   # Why don't we use 63? Because we rotate using the Z axis but we don't train with it atm
+        model = build_cnn_model(input_shape=(train_shape, 1), num_classes=num_classes)
 
-        train_generator = AugmentedDataGenerator(X_train, y_train, batch_size=32, augment=True)
-        val_generator = AugmentedDataGenerator(X_val, y_val, batch_size=32, augment=False)
-        test_generator = AugmentedDataGenerator(X_test, y_test, batch_size=32, augment=False)
+        train_generator = AugmentedGenerator(X_train, y_train, augmentor=augmentor, batch_size=32)
+        val_generator = AugmentedGenerator(X_val, y_val, augmentor=augmentor, batch_size=32)
+        test_generator = AugmentedGenerator(X_test, y_test, augmentor=augmentor, batch_size=32)
 
         # Set up TensorBoard logging
         log_dir = os.path.join(self.training_logs_folder, "fit", datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))

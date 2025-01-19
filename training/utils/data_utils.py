@@ -38,7 +38,7 @@ def split_data(X, y, train_size=0.8, test_size=0.1, val_size=0.1, random_state=4
     return X_train, X_val, X_test, y_train, y_val, y_test
 
 
-def preprocess_data(df, standardize=False):
+def preprocess_data(df):
     """
     Prepares dataset: extracts features (XY), scales X/Y, and optionally standardizes
     """
@@ -52,22 +52,11 @@ def preprocess_data(df, standardize=False):
     # One-hot encode the labels
     labels = to_categorical(labels, num_classes=num_classes)
 
-    # Extract only X and Y values (ignore Z values)
-    XY_cols = [col for col in df.columns if 'x_' in col or 'y_' in col]  # Select only X and Y column_names
-    XY_data = df[XY_cols].values  # Convert to NumPy array
+    # Extract only X, Y, and Z values (ignore handedness for now)
+    XYZ_cols = [col for col in df.columns if col.startswith(('x_', 'y_', 'z_'))]
+    XYZ_data = df[XYZ_cols].values  # Convert to NumPy array
 
-    # Scale (normalize) X and Y values
-    XY_data = scale_xy_data(XY_data)
+    # Reshape for augmentation: (samples, 21 landmarks, 3 coordinates)
+    XYZ_data = XYZ_data.reshape(XYZ_data.shape[0], 21, 3, 1)  # Keep the extra channel
 
-    # Standardization (optional)
-    if standardize:
-        mean = np.mean(XY_data, axis=0)  # Compute mean per feature
-        std = np.std(XY_data, axis=0)  # Compute standard deviation per feature
-        std[std == 0] = 1  # Prevent division by zero
-
-        XY_data = (XY_data - mean) / std  # Standardize
-
-    # Reshape for CNN input: (samples, 42 features, 1 channel)
-    XY_data = XY_data.reshape(XY_data.shape[0], XY_data.shape[1], 1)
-
-    return XY_data, labels, num_classes
+    return XYZ_data, labels, num_classes
