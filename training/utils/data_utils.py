@@ -5,11 +5,10 @@ from sklearn.model_selection import train_test_split
 
 from keras.utils import to_categorical
 
-from utils.config import LANDMARK_DATA_FOLDER
 from utils.scaling import scale_xy_data
 
 
-def load_all_csvs(data_folder: str = LANDMARK_DATA_FOLDER) -> pd.DataFrame:
+def load_all_csvs(data_folder: str) -> pd.DataFrame:
     """
     Loads all CSV gesture data from the specified folder into a single DataFrame
     """
