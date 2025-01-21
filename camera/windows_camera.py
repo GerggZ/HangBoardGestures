@@ -23,7 +23,7 @@ class WindowsCamera(BaseCamera):
         self.height = height
         self.verbose = verbose
 
-        self.cap = None
+        self.cap: cv2.VideoCapture | None = None
 
     def open_camera(self) -> None:
         """

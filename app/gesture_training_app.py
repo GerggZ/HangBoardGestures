@@ -4,17 +4,18 @@ import os
 import datetime
 from keras.callbacks import TensorBoard
 
-from training.utils.data_utils import (
+from training.training_utils.data_utils import (
     load_all_csvs,
     preprocess_data,
     split_data
 )
-from training.utils.model_utils import build_cnn_model
+from training.training_utils.model_utils import build_cnn_model
 from training.data_generator import AugmentedGenerator
-from training.utils.augment_utils import HandsAugmentor
+from training.training_utils.augment_utils import HandsAugmentor
+from app.base_app import BaseApp
 
 
-class TrainModelApp:
+class TrainModelApp(BaseApp):
     def __init__(self, model_path: str, landmark_data_folder: str, training_logs_folder: str):
 
         self.model_path = model_path
@@ -22,7 +23,7 @@ class TrainModelApp:
         self.training_logs_folder = training_logs_folder
 
 
-    def run(self):
+    def run(self) -> None:
         """Loads data, splits it, trains the CNN model, and evaluates it."""
         # Load and preprocess data
         df = load_all_csvs(data_folder=self.landmark_data_folder)

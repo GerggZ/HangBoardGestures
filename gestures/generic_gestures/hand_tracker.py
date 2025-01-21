@@ -3,6 +3,7 @@
 import cv2
 from numpy.typing import NDArray
 import mediapipe as mp
+from mediapipe.python.solutions.hands import Hands
 
 
 class HandTracker:
@@ -20,7 +21,7 @@ class HandTracker:
             max_num_hands=1
         )
 
-    def process_frame(self, frame: NDArray):
+    def process_frame(self, frame: NDArray) -> Hands:
         """
         Converts frame from BGR to RGB and processes hand landmarks
 
@@ -31,4 +32,5 @@ class HandTracker:
             MediaPipe Hand Landmarks Object Results
         """
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        return self.hands.process(frame)
+        hand_thing = self.hands.process(frame)
+        return hand_thing

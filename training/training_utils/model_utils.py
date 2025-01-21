@@ -4,7 +4,7 @@ from keras.models import Sequential
 from keras.layers import Input, Conv1D, Flatten, Dense, Dropout
 
 
-def build_cnn_model(input_shape, num_classes):
+def build_cnn_model(input_shape: tuple[int, int], num_classes: int) -> Sequential:
     """
     Creates a 1D CNN model for gesture recognition.
     input_shape is e.g. (42, 1).

@@ -2,7 +2,7 @@ import os
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
-
+from numpy.typing import NDArray
 from keras.utils import to_categorical
 
 from utils.scaling import scale_xy_data
@@ -20,7 +20,11 @@ def load_all_csvs(data_folder: str) -> pd.DataFrame:
     return pd.concat(dataframes, ignore_index=True)
 
 
-def split_data(X, y, train_size=0.8, test_size=0.1, val_size=0.1, random_state=42, verbose=False):
+def split_data(
+        X: NDArray, y: NDArray,
+        train_size: float = 0.8, test_size: float = 0.1, val_size: float = 0.1,
+        random_state: int = 42, verbose: bool = False
+) -> tuple[NDArray, NDArray, NDArray, NDArray, NDArray, NDArray]:
     """Splits dataset into training, validation, and test sets."""
     X_train, X_val_test, y_train, y_val_test = train_test_split(
         X, y, test_size=test_size + val_size, random_state=random_state
@@ -38,7 +42,7 @@ def split_data(X, y, train_size=0.8, test_size=0.1, val_size=0.1, random_state=4
     return X_train, X_val, X_test, y_train, y_val, y_test
 
 
-def preprocess_data(df):
+def preprocess_data(df: pd.DataFrame) -> tuple[NDArray, NDArray, int]:
     """
     Prepares dataset: extracts features (XY), scales X/Y, and optionally standardizes
     """
@@ -46,11 +50,11 @@ def preprocess_data(df):
         raise ValueError("No dataset provided!")
 
     # Extract labels (gesture index) and rename to "labels" for clarity
-    labels = df["gesture_idx"].astype(int)
-    num_classes = len(labels.unique())
+    labels = df["gesture_idx"].astype(np.int32).to_numpy()
+    num_classes = len(np.unique(labels))
 
     # One-hot encode the labels
-    labels = to_categorical(labels, num_classes=num_classes)
+    labels = np.asarray(to_categorical(labels, num_classes=num_classes))
 
     # Extract only X, Y, and Z values (ignore handedness for now)
     XYZ_cols = [col for col in df.columns if col.startswith(('x_', 'y_', 'z_'))]

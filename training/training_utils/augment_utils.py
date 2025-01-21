@@ -21,14 +21,14 @@ class HandsAugmentor:
 
     def __init__(
         self,
-        flip_horizontal_prob=0.5,
-        flip_vertical_prob=0.5,
-        rotation_prob=0.5,
-        max_yaw=30,
-        max_pitch=30,
-        max_roll=30,
-        wrist_index=0
-    ):
+        flip_horizontal_prob: float = 0.5,
+        flip_vertical_prob: float = 0.5,
+        rotation_prob: float = 0.5,
+        max_yaw: int = 30,
+        max_pitch: int = 30,
+        max_roll: int = 30,
+        wrist_index: int = 0
+    ) -> None:
         self.flip_horizontal_prob = flip_horizontal_prob
         self.flip_vertical_prob = flip_vertical_prob
         self.rotation_prob = rotation_prob
@@ -97,6 +97,7 @@ class HandsAugmentor:
 
         # Drop Z and rescale using the existing scaling function
         XY_batch = XYZ_batch[:, :, :2]  # Keep only X and Y
+        XY_batch = XY_batch.reshape(XY_batch.shape[0], 42)  # Flatten each vector (n, 21, 2, 1) → (n, 42)
         XY_batch = scale_xy_data(XY_batch)  # Apply rescaling
 
-        return  XY_batch[..., np.newaxis] # Returns (batch_size, 42, 1) for training
+        return XY_batch[..., np.newaxis]  # Returns (batch_size, 42, 1) for training

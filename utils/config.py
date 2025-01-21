@@ -10,7 +10,7 @@ TRAINING_LOGS_FOLDER = os.path.join("data", "logs", "{}")
 
 
 # Gestures for the hand
-GENERIC_GESTURE_NAMES = {
+GENERIC_GESTURE_NAMES: dict[int, str] = {
     0: "Open Hand",
     1: "Fist",
     2: "Bird",
@@ -22,7 +22,7 @@ GENERIC_GESTURE_NAMES = {
 }
 
 # Connections between hand landmarks (using landmark indices)
-HAND_CONNECTIONS = [
+HAND_CONNECTIONS: list[tuple[int, int]] = [
     (0, 1), (1, 2), (2, 3), (3, 4),  # Thumb
     (0, 5), (5, 6), (6, 7), (7, 8),  # Index finger
     (0, 9), (9, 10), (10, 11), (11, 12),  # Middle finger
@@ -31,7 +31,7 @@ HAND_CONNECTIONS = [
 ]
 
 # Dictionary for finger colors
-FINGER_COLORS = {
+FINGER_COLORS: dict[str, tuple[int, int, int]] = {
     'thumb': (0, 0, 255),   # Red
     'index': (0, 255, 0),   # Green
     'middle': (255, 0, 0),  # Blue
@@ -40,7 +40,7 @@ FINGER_COLORS = {
 }
 
 # Map landmark index to finger
-LANDMARK_TO_FINGER = {
+LANDMARK_TO_FINGER: dict[int, str] = {
     0: 'wrist',
     1: 'thumb', 2: 'thumb', 3: 'thumb', 4: 'thumb',
     5: 'index', 6: 'index', 7: 'index', 8: 'index',

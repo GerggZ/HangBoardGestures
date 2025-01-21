@@ -6,21 +6,34 @@ import numpy as np
 from numpy.typing import NDArray
 
 from utils.config import HAND_CONNECTIONS, LANDMARK_TO_FINGER, FINGER_COLORS
+from camera.base_camera import BaseCamera
+from gestures.generic_gestures.hand_tracker import HandTracker
+from mediapipe.python.solutions.hands import Hands
 
 
 class UIDrawer:
     """
     Draws all UI elements on top of camera feed
     """
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializes UIDrawer module
         """
         self.show_save_message = False
-        self.save_message_time = 0
+        self.save_message_time = 0.
         self.save_message_duration = 0.
+        self.prev_time = time.time()
 
-    def draw_overlay(self, frame: NDArray, current_gesture_name: str, current_gesture_idx: int, predicted_gesture: str):
+    def get_fps(self) -> float:
+        """
+        Extracts the fps
+        """
+        current_time = time.time()
+        fps = 1 / (current_time - self.prev_time) if (current_time - self.prev_time) > 0 else 0
+        self.prev_time = current_time
+        return fps
+
+    def draw_overlay(self, frame: NDArray, current_gesture_name: str, current_gesture_idx: int | None, predicted_gesture: str) -> None:
         """
         Draws a semi-transparent box and text showing UI information
         """
@@ -44,6 +57,7 @@ class UIDrawer:
         ui_text = [
             f"Gesture: {current_gesture_name} ({current_gesture_idx})",
             f"Predicted: {predicted_gesture}",
+            f"FPS: {self.get_fps(): .2f}",
             "ENTER to Capture",
             "0-9 to Select Gesture",
             "'C' to Clear Selection",
@@ -71,7 +85,7 @@ class UIDrawer:
         self.show_save_message = True
         self.save_message_time = time.time()
 
-    def flash_screen(self, camera, tracker, duration: float = 0.1, intensity: float = 0.8, num_steps: int = 5) -> None:
+    def flash_screen(self, camera: BaseCamera, tracker: HandTracker, duration: float = 0.1, intensity: float = 0.8, num_steps: int = 5) -> None:
         """
         Applies a white overlay (flash) on top of the live video feed to give optical feedback to data capture
 
@@ -102,7 +116,7 @@ class UIDrawer:
                 cv2.waitKey(1)  # Allow OpenCV to refresh the UI
 
     @staticmethod
-    def draw_hand_landmarks(frame: NDArray, results):
+    def draw_hand_landmarks(frame: NDArray, results: Hands) -> None:
         """
         Draws detected hand landmarks with colors and connections.
         """

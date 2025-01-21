@@ -22,7 +22,7 @@ class PiCamera(BaseCamera):
         self.height = height
         self.verbose = verbose
 
-        self.picam2 = None
+        self.picam2: PiCamera2 | None = None
 
     def open_camera(self) -> None:
         """

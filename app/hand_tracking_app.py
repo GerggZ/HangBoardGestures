@@ -7,11 +7,12 @@ from gestures.generic_gestures.gesture_recorder import GestureRecorder
 from gestures.generic_gestures.gesture_predictor import GesturePredictor
 from utils.config import GENERIC_GESTURE_NAMES
 from drawing.ui_drawer import UIDrawer
+from camera.base_camera import BaseCamera
+from app.base_app import BaseApp
 
-from utils.config import LANDMARK_DATA_FOLDER, MODEL_PATH
 
-class HandTrackingApp:
-    def __init__(self, model_path, landmark_save_folder, camera):
+class HandTrackingApp(BaseApp):
+    def __init__(self, model_path: str, landmark_save_folder: str, camera: BaseCamera):
         self.camera = camera
         self.tracker = HandTracker()
         self.recorder = GestureRecorder(save_folder=landmark_save_folder)
@@ -22,7 +23,7 @@ class HandTrackingApp:
 
         self.predicted_gesture = "None"
 
-    def run(self):
+    def run(self) -> None:
         self.camera.open_camera()
 
         while True:

@@ -2,26 +2,27 @@
 
 import numpy as np
 from numpy.typing import NDArray
+from numba import njit
+from mediapipe.framework.formats.landmark_pb2 import NormalizedLandmarkList
 
 
-def convert_landmarks_to_numpy(multi_hand_landmarks) -> NDArray | None:
+def convert_landmarks_to_numpy(multi_hand_landmarks: list[NormalizedLandmarkList]) -> NDArray:
     """
     Converts Mediapipe's multi_hand_landmarks results into a NumPy array
     of shape (num_hands, 21 x 3), containing [x, y, z] coordinates]
     """
-    hand_coords_list = []
+    hand_coords_list: list[NDArray[np.float32]] = []
     for hand_landmarks in multi_hand_landmarks:
         # For each of the 21 landmarks, grap (x, y, z)
-        coords = []
-        for landmark in hand_landmarks.landmark:
-            coords.append([landmark.x, landmark.y, landmark.z])
-        coords = np.array(coords)
+        coords: NDArray[np.float32] = np.array([[lm.x, lm.y, lm.z] for lm in hand_landmarks.landmark], dtype=np.float32)
         hand_coords_list.append(coords)
 
     # Stack into shape (num_hands, 21, 3)
-    hand_coords_array = np.stack(hand_coords_list, axis=0)
+    hand_coords_array: NDArray[np.float32] = np.stack(hand_coords_list, axis=0)
     return hand_coords_array
 
+
+@njit(fastmath=True)
 def scale_xy_data(landmarks_XY: NDArray) -> NDArray:
     """
     Scales X and Y values between 0 and 1 per row (gesture instance)

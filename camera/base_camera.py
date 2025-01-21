@@ -1,6 +1,8 @@
 # camera/base_camera.py
 
 from abc import ABC, abstractmethod
+from numpy.typing import NDArray
+
 
 class BaseCamera(ABC):
     """
@@ -17,7 +19,7 @@ class BaseCamera(ABC):
         pass
 
     @abstractmethod
-    def read_frame(self):
+    def read_frame(self) -> NDArray:
         """
         Reads a frame from the camera.
 

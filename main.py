@@ -4,10 +4,11 @@
 from utils.config import LANDMARK_DATA_FOLDER, TRAINING_LOGS_FOLDER, MODEL_PATH
 from app.gesture_training_app import TrainModelApp
 from app.hand_tracking_app import HandTrackingApp
+from app.base_app import BaseApp
 from camera.windows_camera import WindowsCamera
 
 if __name__ == "__main__":
-    mode = 'Tracking'
+    mode = 'Training'
     version_name = 'generic_gestures'
 
     # Configure paths
@@ -19,6 +20,7 @@ if __name__ == "__main__":
     if mode not in mode_options:
         raise ValueError(f"mode of `{mode} not supported. Select from {mode_options}")
 
+    app: BaseApp  # to make MyPy happy
     if mode == 'Training':
         app = TrainModelApp(model_path, landmark_data_folder, training_logs_folder)
     elif mode == 'Tracking':

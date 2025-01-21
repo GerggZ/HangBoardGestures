@@ -4,23 +4,24 @@ import os
 import pandas as pd
 from datetime import datetime
 from utils.config import GENERIC_GESTURE_NAMES
+from mediapipe.python.solutions.hands import Hands
 
 
 class GestureRecorder:
     """
     Module for Recording the landmarks
     """
-    def __init__(self, save_folder, verbose: bool = False):
+    def __init__(self, save_folder: str, verbose: bool = False) -> None:
         """
         Initializes things
         """
-        self.gesture_idx = None
+        self.gesture_idx: int | None = None
         self.verbose = verbose
         self.save_folder = save_folder
         os.makedirs(self.save_folder, exist_ok=True)
 
-        self.data = None
-        self.gesture_counts = None
+        self.data: pd.DataFrame = pd.DataFrame()
+        self.gesture_counts: dict[int, int] = {}
 
         # Define CSV Columns (Gesture IDX, Gesture Name, Handedness, 21 Landmarks X 3 coords
         self.column_names = ["gesture_idx", "gesture_name", "handedness"] + [
@@ -35,7 +36,7 @@ class GestureRecorder:
             return "None"
         return GENERIC_GESTURE_NAMES.get(self.gesture_idx, f"Unknown ({self.gesture_idx})")
 
-    def set_gesture_idx(self, num) -> None:
+    def set_gesture_idx(self, num: int) -> None:
         """Sets gesture index to the number pressed (0-9)."""
         self.gesture_idx = num
 
@@ -49,7 +50,7 @@ class GestureRecorder:
         if self.verbose:
             print("Gesture selection cleared (None)")
 
-    def record_landmarks(self, results):
+    def record_landmarks(self, results: Hands) -> None:
         """Records raw hand landmark coordinates (as given by Mediapipe) into the DataFrame."""
         if not results or not results.multi_hand_landmarks:
             # No hands detected
@@ -89,5 +90,6 @@ class GestureRecorder:
 
     def reset_data_df(self) -> None:
         """Resets the data DataFrame and counts"""
-        self.data = pd.DataFrame(columns=self.column_names)
+        if self.data is not None:
+            self.data = pd.DataFrame(columns=self.column_names)
         self.gesture_counts = {gesture: 0 for gesture in GENERIC_GESTURE_NAMES.keys()}  # Initialize counts to 0
